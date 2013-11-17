@@ -32,7 +32,7 @@ def retrieve_possible_comments(file_name)
       current_comment << trim(line)
       previous_line_type = :multi_line_comment
     elsif(match = line.match(/^(.*)\/\*(.*)$/)) # start of multi-line comment
-      comments << current_comment
+      comments << current_comment if(current_comment.length > 0)
       current_comment = []
       current_comment << trim(match[2])
       previous_line_type = :multi_line_comment
@@ -40,13 +40,13 @@ def retrieve_possible_comments(file_name)
       if(previous_line_type == :single_line_comment) 
         current_comment << trim(match[1])
       else
-        comments << current_comment
+        comments << current_comment if(current_comment.length > 0)
         current_comment = []
         current_comment << trim(match[1])
       end
       previous_line_type = :single_line_comment
     elsif(previous_line_type == :single_line_comment) # normal line type
-      comments << current_comment
+      comments << current_comment if(current_comment.length > 0)
       current_comment = []
     end
   end

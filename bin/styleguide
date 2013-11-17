@@ -1,4 +1,4 @@
 #!/usr/bin/env ruby
 gem_bin_directory =  File.dirname(__FILE__)
 rack_up_file = gem_bin_directory.gsub(/bin$/, 'config.ru')
-puts `bundle exec thin --rackup #{rack_up_file} start`
+system "bundle exec thin --rackup #{rack_up_file} start"

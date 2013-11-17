@@ -11,7 +11,7 @@ map '/assets' do
 end
 map '/' do 
   run Proc.new {
-    layout_template_file = "#{gem_directory}/index.htm.erb"
+    layout_template_file = "#{gem_directory}/layout.htm.erb"
     layout_template = Tilt.new(layout_template_file)
     output = layout_template.render(Object.new, {}) do
       '<h1>Andrew Ralph Bryant</h1>'

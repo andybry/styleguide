@@ -68,3 +68,29 @@ end
 files.each do |file|
   comments_so_far.concat(retrieve_possible_comments(file))
 end
+
+###############################################################################
+# Parse the comments
+###############################################################################
+
+# parsing rules:
+#   - only parse comments that start 'Styleguide {name}' where {name} is the 
+#     rest of the line
+#   - for the rest of the comment parse into key value pairs:
+#       line starting {key}:
+#       then the next lines form the value
+#   - default parsing for the lines is by joining them with a \n
+#   - some keys might have specialized parsing rules
+#   - ignore lines immediately after the Styleguide declaration that don't have 
+#     any content
+styleguide_sections = {}
+comments_so_far.each do |comment|
+  if(match = comment[0].match(/^Styleguide (.*)$/))
+    section = {}
+    name = match[1]
+    section[:name] = name
+    styleguide_sections[name] = section
+  end
+end
+
+pp styleguide_sections

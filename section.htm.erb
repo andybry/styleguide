@@ -1,1 +1,5 @@
-<%= section %>
+<% if(template = section[:template])
+  tilt_template = Tilt.new(template.gsub(/\s*/, ''))
+  output = tilt_template.render
+end %>
+<%= output %>

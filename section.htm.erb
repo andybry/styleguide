@@ -3,7 +3,7 @@ require 'json'
 if(template = section[:template])
   data = {}
   if(json = section[:data])
-    data = JSON.parse(json)
+    data = JSON.parse(json, symbolize_names: true)
   end
   tilt_template = Tilt.new(template.gsub(/\s*/, ''))
   output = tilt_template.render(Object.new, data)

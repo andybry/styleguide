@@ -153,21 +153,34 @@ map '/jasmine' do
 end
 
 map '/' do 
-  run Proc.new {
+  run Proc.new { |env|
     styleguide = StyleguideCalculator::calculate_styleguide
+    path_info = env['PATH_INFO']
+    possible_section = Rack::Utils.unescape(path_info[1..-1])
     layout_template_file = "#{$gem_directory}/layout.htm.erb"
     layout_template = Tilt.new(layout_template_file)
-    index_template_file = "#{$gem_directory}/index.htm.erb"
-    index_template = Tilt.new(index_template_file)
-    output = layout_template.render(Object.new, {}) do
-      index_template.render(Object.new, {
-        styleguide: styleguide
-      })
+    output = ''
+    if(section = styleguide[possible_section])
+      section_template_file = "#{$gem_directory}/section.htm.erb"
+      section_template = Tilt.new(section_template_file)
+      output = layout_template.render(Object.new, {}) do
+        section_template.render(Object.new, {
+          section: section
+        })
+      end
+    else
+      index_template_file = "#{$gem_directory}/index.htm.erb"
+      index_template = Tilt.new(index_template_file)
+      output = layout_template.render(Object.new, {}) do
+        index_template.render(Object.new, {
+          styleguide: styleguide
+        })
+      end
     end
-    [
-      200,
-      {},
-      [output]
-    ]
+      [
+        200,
+        {},
+        [output]
+      ]
   }
 end

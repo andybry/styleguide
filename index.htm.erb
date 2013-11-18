@@ -1,1 +1,5 @@
-<%= styleguide %>
+<% styleguide.each do |section_name, section| %>
+  <p>
+    <a href="/<%= section_name %>"><%= section_name %></a>
+  </p>
+<% end %>

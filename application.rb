@@ -77,18 +77,29 @@ end
 #   - only parse comments that start 'Styleguide {name}' where {name} is the 
 #     rest of the line
 #   - for the rest of the comment parse into key value pairs:
-#       line starting {key}:
+#       line starting {key}::
 #       then the next lines form the value
 #   - default parsing for the lines is by joining them with a \n
-#   - some keys might have specialized parsing rules
 #   - ignore lines immediately after the Styleguide declaration that don't have 
-#     any content
+#     any content (until you hit a key:: line)
 styleguide_sections = {}
 comments_so_far.each do |comment|
   if(match = comment[0].match(/^Styleguide (.*)$/))
     section = {}
     name = match[1]
     section[:name] = name
+    current_key = nil
+    current_value = ''
+    comment[1..-1].each do |line|
+      if(match = line.match(/^(\w+)::\s*$/)) 
+        section[current_key] = current_value if current_key
+        current_value = ''
+        current_key = match[1].to_sym
+      else
+        current_value = current_value + line + "\n"
+      end
+    end
+    section[current_key] = current_value if current_key
     styleguide_sections[name] = section
   end
 end

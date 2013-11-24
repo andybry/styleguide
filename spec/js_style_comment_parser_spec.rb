@@ -1,4 +1,3 @@
-require 'rspec'
 require 'styleguide/js_style_comment_parser'
 
 describe 'JSStyleCommentParser' do

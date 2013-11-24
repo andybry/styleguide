@@ -10,9 +10,6 @@ require 'rack/livereload'
 
 module StyleguideCalculator
   class << self
-    def trim(string)
-      string.gsub(/^(\s|\*)+|(\s|\*)+$/, '')
-    end
 
     def retrieve_possible_comments(file_name)
       src = ::File.read(file_name)
@@ -28,25 +25,25 @@ module StyleguideCalculator
       #
       src_lines.each do |line|
         if(match = line.match(/^(.*)\*\/(.*)$/) and previous_line_type == :multi_line_comment) # end of multi-line
-          current_comment << trim(match[2])
+          current_comment << match[2].strip()
           comments << current_comment
           current_comment = []
           previous_line_type = :normal
         elsif(previous_line_type == :multi_line_comment) # middle of multi-line comment
-          current_comment << trim(line)
+          current_comment << line.strip()
           previous_line_type = :multi_line_comment
         elsif(match = line.match(/^(.*)\/\*(.*)$/)) # start of multi-line comment
           comments << current_comment if(current_comment.length > 0)
           current_comment = []
-          current_comment << trim(match[2])
+          current_comment << match[2].strip()
           previous_line_type = :multi_line_comment
         elsif(match = line.match(/\/\/(.*)/)) # single_line_comment
           if(previous_line_type == :single_line_comment) 
-            current_comment << trim(match[1])
+            current_comment << match[1].strip()
           else
             comments << current_comment if(current_comment.length > 0)
             current_comment = []
-            current_comment << trim(match[1])
+            current_comment << match[1].strip()
           end
           previous_line_type = :single_line_comment
         elsif(previous_line_type == :single_line_comment) # normal line type
@@ -110,7 +107,7 @@ environment = Sprockets::Environment.new
 environment.append_path('javascripts')
 environment.append_path('stylesheets')
 environment.append_path('images')
-environment.append_path('specs')
+environment.append_path('spec')
 
 map '/assets' do
   run environment
@@ -129,9 +126,9 @@ class JasmineApplication < Rack::Directory
       ]
     elsif(path_info == '/')
       spec_files = []
-      Find.find('specs') do |path|
+      Find.find('spec') do |path|
         if(::File.file?(path))
-          spec_files << (path.gsub(/^specs\//, ''))
+          spec_files << (path.gsub(/^spec\//, ''))
         end
       end
       jasmine_template = Tilt.new("#{$gem_directory}/jasmine-1.3.1/SpecRunner.html.erb")

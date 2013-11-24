@@ -1,5 +1,5 @@
 require "styleguide/version"
 
 module Styleguide
-  # Your code goes here...
+  autoload(:JSStyleCommentParser, 'styleguide/js_style_comment_parser')
 end

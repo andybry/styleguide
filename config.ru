@@ -2,6 +2,7 @@ require 'sprockets'
 require 'tilt'
 require 'rack'
 require 'find'
+require 'rack/livereload'
 
 ###############################################################################
 # Styleguide calculations
@@ -149,10 +150,12 @@ class JasmineApplication < Rack::Directory
 end
 
 map '/jasmine' do
+  use Rack::LiveReload
   run JasmineApplication.new("#{$gem_directory}/jasmine-1.3.1")
 end
 
-map '/' do 
+map '/' do
+  use Rack::LiveReload
   run Proc.new { |env|
     styleguide = StyleguideCalculator::calculate_styleguide
     path_info = env['PATH_INFO']
@@ -179,7 +182,7 @@ map '/' do
     end
       [
         200,
-        {},
+        {'Content-Type' => 'text/html'},
         [output]
       ]
   }

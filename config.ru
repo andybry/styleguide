@@ -140,7 +140,7 @@ class JasmineApplication < Rack::Directory
       })
       [
         200, 
-        {},
+        {'Content-Type' => 'text/html'},
         [output]
       ]
     else

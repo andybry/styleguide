@@ -46,7 +46,7 @@ describe 'JSStyleCommentParser' do
     end
   end
 
-  describe 'parse' do
+  describe '#parse' do
     context 'file contains no comments' do
       file_lines = [
           'line 1',

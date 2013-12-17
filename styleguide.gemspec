@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "rake"
-  spec.add_dependency "sprockets"
+  spec.add_dependency "sprockets", "~> 2.10.1"
   spec.add_dependency "tilt"
   spec.add_dependency "rack"
   spec.add_dependency "thin"

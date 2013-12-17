@@ -17,7 +17,7 @@ module StyleguideCalculator
       comments_so_far = []
       files = []
 
-      Find.find('.') do |path|
+      Find.find('dist') do |path|
         if(::File.file?(path) and path.match(/\.(scss|js)(\.)?/))
           files << path if(not path.match(/\.swp$/))
         end

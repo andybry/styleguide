@@ -64,10 +64,10 @@ end
 $gem_directory =  File.dirname(__FILE__)
 
 environment = Sprockets::Environment.new
-environment.append_path('javascripts')
-environment.append_path('stylesheets')
-environment.append_path('images')
-environment.append_path('spec')
+environment.append_path('dist/javascripts')
+environment.append_path('dist/stylesheets')
+environment.append_path('dist/images')
+environment.append_path('dist/spec')
 
 map '/assets' do
   run environment
